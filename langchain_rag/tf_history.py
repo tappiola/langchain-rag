@@ -18,6 +18,7 @@ from langchain_rag.splitter import RecursiveHCLSplitter
 
 load_dotenv()
 
+SOURCE_DATA_PATH = os.getenv('SOURCE_DATA_PATH')
 
 # --- Load Terraform files ---
 def load_terraform_files(folder_path: str):
@@ -29,7 +30,7 @@ def load_terraform_files(folder_path: str):
 
 
 splitter = RecursiveHCLSplitter()
-terraform_docs = splitter.extract_documents_from_folder("./terraform_sources")
+terraform_docs = splitter.extract_documents_from_folder(SOURCE_DATA_PATH)
 
 # --- Vector store setup ---
 embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
@@ -40,12 +41,13 @@ vector_store = Chroma(
 )
 
 print(f"=== {len(vector_store.get()['documents'])} DOCS IN STORE ===")
-reload = False
-if len(vector_store.get()["documents"]) == 0 or reload:
+force_reload = False
+if len(vector_store.get()["documents"]) == 0 or force_reload:
     ids = vector_store.get()['ids']
     if ids:
         vector_store.delete(ids=ids)
 
+    print(f'Loading data from {SOURCE_DATA_PATH}...')
     vector_store.add_documents(terraform_docs)
     vector_store.persist()
 print(f"=== {len(vector_store.get()['documents'])} DOCS IN STORE ===")
@@ -65,6 +67,8 @@ Request:
 
 —
 Output only the final Terraform code blocks, including any necessary meta-arguments (providers, version constraints, etc.).
+
+Cleanup terraform variables to include only ones, referenced in the generated code. But always keep `environment_name` and `region` variables.
 """
 )
 
