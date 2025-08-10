@@ -1,0 +1,14 @@
+chromadb==1.0.16
+dotenv==0.9.9
+fastapi==0.116.1
+langchain-community==0.3.27
+langchain-core==0.3.74
+langchain-openai==0.3.29
+langchain-redis==0.2.3
+langchain==0.3.27
+langgraph==0.6.4
+langserve==0.3.1
+lark==1.2.2
+python-hcl2==7.3.1
+sse_starlette==3.0.2
+uvicorn==0.35.0

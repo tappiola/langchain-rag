@@ -1,0 +1,9 @@
+.idea
+.env
+.venv
+
+# Exclude terraform source files used during RAG
+terraform_sources/*
+!terraform_sources/.gitkeep
+
+chroma_store
