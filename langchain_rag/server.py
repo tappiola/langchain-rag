@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from langserve import add_routes
 
-from langchain_rag.tf_history import chatbot_with_history
+from langchain_rag.tf import chatbot_with_history
 
 app = FastAPI()
 
